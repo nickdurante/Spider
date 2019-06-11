@@ -5,11 +5,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<Connection> connections = new ArrayList<Connection>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +29,26 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Here I'll put the ssh upload", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+
+        RecyclerView rvConnections = (RecyclerView) findViewById(R.id.rvConnections);
+
+        // create fake initialize connections
+        for(int i=0; i<40; i++){
+            String si = String.valueOf((i*1111)%256);
+            String t_ip = si + '.' + si + '.' + si + '.' + si;
+            connections.add(new Connection(t_ip, i*1234%100, "nick", "key.rsa"));
+        }
+
+        // link all
+        ConnectionAdapter adapter = new ConnectionAdapter(connections);
+        rvConnections.setAdapter(adapter);
+        rvConnections.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
     @Override
