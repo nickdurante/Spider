@@ -1,5 +1,6 @@
 package org.kknickkk.spider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here I'll put the ssh upload", Snackbar.LENGTH_LONG)
+                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
+
+                Snackbar.make(view, "Here I'll put the connection added", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
