@@ -1,6 +1,9 @@
 package org.kknickkk.spider;
 
-public class Connection {
+
+//TODO probably serialize this (?)
+
+public class Connection{
     private String ip;
     private int port;
     private String user;

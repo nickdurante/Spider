@@ -54,6 +54,7 @@
         android:id="@+id/register_button_choose_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="performFileSearch"
         android:text="Choose id file" />
 
     <Button
