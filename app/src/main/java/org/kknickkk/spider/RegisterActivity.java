@@ -6,27 +6,22 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Vector;
+import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 
@@ -52,8 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     Uri uri;
     String filecontent_private;
-    String filecontent_public;
-
+    ConnectTask connectTask;
+    Session session;
 
     /** Called when the user taps the Send button */
     public void saveConnection(View view) {
@@ -64,23 +59,14 @@ public class RegisterActivity extends AppCompatActivity {
         EditText ePassword = (EditText) findViewById(R.id.register_password);
         Switch sID = findViewById(R.id.register_switch_id);
 
-
-        String text = eIP.getText().toString() + "\n" + ePort.getText().toString() + "\n" + eUser.getText().toString() + "\n" + ePassword.getText().toString() + "\n" + sID.isChecked() + "\n" + uri.toString();
-        //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-        Connection connectionToAdd = new Connection(eIP.getText().toString(), Integer.valueOf(ePort.getText().toString()), eUser.getText().toString(), uri.toString());
-
-        //launch new activity
         String user = eUser.getText().toString();
         String IP = eIP.getText().toString();
         String port = ePort.getText().toString();
 
-
-
         //connection task
-        ConnectTask connectTask = new ConnectTask();
+        connectTask = new ConnectTask();
+        connectTask.execute(user, IP, port, filecontent_private);
 
-        connectTask.execute(user, IP, port, filecontent_public, filecontent_private);
-        Session session = null;
         try {
             session = connectTask.get();
         } catch (ExecutionException e) {
@@ -88,23 +74,17 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //get file tasks
-        /*
-        GetFileList getFileList = new GetFileList();
-        getFileList.execute(session);
-        try {
-            Vector<ChannelSftp.LsEntry> fileList = getFileList.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
 
-
+        Intent myIntent = new Intent(RegisterActivity.this, FolderActivity.class);
+        //myIntent.putExtra("session", session);
+        Globals.session = session;
+        connectTask.cancel(true);
+        Log.d("REGISTER ACTIVITY", "launching Folder activity");
+        RegisterActivity.this.startActivity(myIntent);
         //close activity
         //finish();
     }
+
 
 
 
@@ -133,27 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
         startActivityForResult(intent, READ_REQUEST_CODE_PRIVATEKEY);
     }
 
-    public void performFileSearchPublic(View view) {
-
-        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-        // browser.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-        // Filter to only show results that can be "opened", such as a
-        // file (as opposed to a list of contacts or timezones)
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        // Filter to show only images, using the image MIME data type.
-        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-        // To search for all documents available via installed storage providers,
-        // it would be "*/*".
-        intent.setType("*/*");
-
-        startActivityForResult(intent, READ_REQUEST_CODE_PUBLICKEY);
-    }
-
-
-
 
 
     @Override
@@ -180,23 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         }
-        if (requestCode == READ_REQUEST_CODE_PUBLICKEY && resultCode == Activity.RESULT_OK) {
-            // The document selected by the user won't be returned in the intent.
-            // Instead, a URI to that document will be contained in the return intent
-            // provided to this method as a parameter.
-            // Pull that URI using resultData.getData().
-            //Uri uri = null;
-            if (resultData != null) {
-                uri = resultData.getData();
-                try {
-                    filecontent_public = readTextFromUri(uri);
-                    //Toast.makeText(getApplicationContext(), filecontent, Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        }
     }
 
 
@@ -208,8 +151,8 @@ public class RegisterActivity extends AppCompatActivity {
         while ((line = reader.readLine()) != null) {
             stringBuilder.append(line);
         }
-        //fileInputStream.close();
-        //parcelFileDescriptor.close();
+        inputStream.close();
+        reader.close();
         return stringBuilder.toString();
     }
 

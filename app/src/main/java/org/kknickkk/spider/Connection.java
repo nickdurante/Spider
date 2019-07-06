@@ -1,7 +1,6 @@
 package org.kknickkk.spider;
 
 
-//TODO probably serialize this (?)
 
 public class Connection{
     private String ip;

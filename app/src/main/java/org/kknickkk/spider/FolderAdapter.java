@@ -5,19 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.ViewHolder>{
+public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView connectionIp, connectionPort, connectionUser;
-        public Button connectButton;
+        public TextView filename;
+        public ImageView icon;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -26,24 +27,22 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            connectionIp= (TextView) itemView.findViewById(R.id.connection_ip);
-            connectButton = (Button) itemView.findViewById(R.id.connect_button);
-            connectionPort = (TextView) itemView.findViewById(R.id.connection_port);
-            connectionUser = (TextView) itemView.findViewById(R.id.connection_user);
+            filename = itemView.findViewById(R.id.filename);
+            icon = itemView.findViewById(R.id.icon);
 
         }
     }
 
 
-    private List<Connection> mConnections;
+    private List<DirectoryElement> mDirectoryElement;
 
-    public ConnectionAdapter(List<Connection> conn){
-        mConnections = conn;
+    public FolderAdapter(List<DirectoryElement> dir){
+        mDirectoryElement = dir;
     }
 
 
     @Override
-    public ConnectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FolderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -57,23 +56,25 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(ConnectionAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(FolderAdapter.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Connection connection = mConnections.get(position);
+        DirectoryElement directoryElement = mDirectoryElement.get(position);
 
         // Set item views based on your views and data model
+        if(directoryElement.isDirectory){
+            viewHolder.icon.setImageResource(R.drawable.folder);
+        }else {
+            viewHolder.icon.setImageResource(R.drawable.file);
+        }
+        viewHolder.filename.setText(directoryElement.name);
 
-        viewHolder.connectionIp.setText(connection.getIp());
-        viewHolder.connectionPort.setText(String.valueOf(connection.getPort()));
-        viewHolder.connectionUser.setText(connection.getUser());
-        viewHolder.connectButton.setText("Connect");
 
     }
 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return mConnections.size();
+        return mDirectoryElement.size();
     }
 
 }
