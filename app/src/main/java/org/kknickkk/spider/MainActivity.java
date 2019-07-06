@@ -51,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
             connections.add(new Connection(t_ip, i*1234%100, "nick", "key.rsa"));
         }
 
-        //Setting preferences
-        SharedPreferences sharedPreferences = getSharedPreferences("Connections", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.put
+
 
         // link all
         adapter = new ConnectionAdapter(connections);

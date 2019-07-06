@@ -7,7 +7,7 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register New Connection"
+        android:text="Connect to"
         android:textAlignment="center"
         android:textColor="?attr/editTextColor"
         android:textSize="24sp" />
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="IP" />
+        android:text="192.168.1.114" />
 
     <EditText
         android:id="@+id/register_port"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:text="Port" />
+        android:text="22" />
 
     <EditText
         android:id="@+id/register_user"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="user" />
+        android:text="pi" />
 
     <EditText
         android:id="@+id/register_password"
@@ -54,8 +54,15 @@
         android:id="@+id/register_button_choose_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="performFileSearch"
-        android:text="Choose id file" />
+        android:onClick="performFileSearchPrivate"
+        android:text="Choose private key" />
+
+    <Button
+        android:id="@+id/register_button_choose_file2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="performFileSearchPublic"
+        android:text="Choose public key" />
 
     <Button
         android:id="@+id/register_button_save"
@@ -63,6 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:onClick="saveConnection"
-        android:text="Save" />
+        android:text="Connect" />
 
 </LinearLayout>
