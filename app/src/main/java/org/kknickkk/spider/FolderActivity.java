@@ -1,10 +1,8 @@
 package org.kknickkk.spider;
 
-import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.Session;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.concurrent.ExecutionException;
 
 public class FolderActivity extends AppCompatActivity {
 
@@ -35,6 +32,17 @@ public class FolderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_folder);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO upload a file
+                Snackbar.make(view, "Upload a file", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
 
         Globals.elements = elements;
 
@@ -76,12 +84,16 @@ public class FolderActivity extends AppCompatActivity {
 
                     @Override public void onLongItemClick(View view, int position) {
                         Log.d("ELEMENT", "onClick LONG " + position + " " + elements.get(position).name);
+
+                        // TODO file download
+                        Log.d("FEATURE", "here I should put the file download");
+                        Snackbar.make(view, "Download a file", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 })
         );
 
     }
-
 
 
 
@@ -107,7 +119,10 @@ public class FolderActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+
+            Globals.session.disconnect();
+            finish();
             return true;
         }
 

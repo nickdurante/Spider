@@ -55,10 +55,6 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(contactView);
 
-
-
-
-
         return viewHolder;
     }
 
@@ -77,7 +73,6 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             viewHolder.icon.setImageResource(R.drawable.file);
         }
         viewHolder.filename.setText(directoryElement.name);
-
 
     }
 
