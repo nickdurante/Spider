@@ -120,7 +120,7 @@ public class FolderActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-
+            Globals.channel.disconnect();
             Globals.session.disconnect();
             finish();
             return true;

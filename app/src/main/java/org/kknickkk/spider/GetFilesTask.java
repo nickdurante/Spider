@@ -37,7 +37,7 @@ public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.
                 Log.d("GETFILELIST TASK", entry.getFilename());
 
             }
-
+            Globals.channel = channel;
             Globals.currentDir = list;
 
             return list;
