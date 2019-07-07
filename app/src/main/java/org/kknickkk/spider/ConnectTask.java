@@ -3,14 +3,10 @@ package org.kknickkk.spider;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
 import java.nio.charset.StandardCharsets;
-import java.util.Vector;
 
 
 public class ConnectTask extends AsyncTask<String, Integer, Session> {

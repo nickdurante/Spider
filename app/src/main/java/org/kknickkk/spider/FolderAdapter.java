@@ -71,6 +71,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         // Set item views based on your views and data model
         if(directoryElement.isDirectory){
             viewHolder.icon.setImageResource(R.drawable.folder);
+        }else if(directoryElement.sftpInfo.getAttrs().isLink()){
+            viewHolder.icon.setImageResource(R.drawable.right);
         }else {
             viewHolder.icon.setImageResource(R.drawable.file);
         }

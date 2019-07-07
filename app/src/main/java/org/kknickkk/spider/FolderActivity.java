@@ -68,7 +68,7 @@ public class FolderActivity extends AppCompatActivity {
                 new RecyclerItemClickListener(this,rvConnections ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Log.d("ELEMENT", "onClick " + elements.get(position).name);
-                        if(elements.get(position).isDirectory){
+                        if(elements.get(position).isDirectory || elements.get(position).sftpInfo.getAttrs().isLink()){
                             pathHandler.updatePath(elements.get(position).name);
                             new GetFilesTask().execute(pathHandler.getCurrentPath());
                         }
