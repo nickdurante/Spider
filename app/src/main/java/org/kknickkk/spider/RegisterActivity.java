@@ -63,6 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         String IP = eIP.getText().toString();
         String port = ePort.getText().toString();
 
+
+        // TODO enable password login
+
         //connection task
         connectTask = new ConnectTask();
         connectTask.execute(user, IP, port, filecontent_private);

@@ -1,6 +1,7 @@
 package org.kknickkk.spider;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>{
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView filename;
@@ -31,6 +32,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             icon = itemView.findViewById(R.id.icon);
 
         }
+
+
     }
 
 
@@ -51,6 +54,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(contactView);
+
+
+
+
+
         return viewHolder;
     }
 

@@ -57,15 +57,22 @@ public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.
 
         ArrayList<DirectoryElement> elements = Globals.elements;
         Vector<ChannelSftp.LsEntry> fileArray = Globals.currentDir;
+        elements.clear();
+        Globals.elements = elements;
+        elements.add(new DirectoryElement("..", true, Long.parseLong("0"), null));
+
         if(fileArray != null) {
             for (ChannelSftp.LsEntry entry : fileArray) {
                 Log.d("FOLDER ACTIVITY", "adding to elements:" + entry.getFilename());
-                elements.add(new DirectoryElement(entry.getFilename(), entry.getAttrs().isDir(), entry.getAttrs().getSize()));
+                elements.add(new DirectoryElement(entry.getFilename(), entry.getAttrs().isDir(), entry.getAttrs().getSize(), entry));
             }
         }
        adapter.notifyDataSetChanged();
     }
 
-
+    @Override
+    protected void onCancelled(){
+        return;
+    }
 
 }

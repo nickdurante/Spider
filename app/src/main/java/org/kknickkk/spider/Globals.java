@@ -13,5 +13,6 @@ public class Globals {
     public static Vector<ChannelSftp.LsEntry> currentDir;
     public static FolderAdapter rvAdapter;
     public static ArrayList<DirectoryElement> elements;
+    public static String currentPath;
 
 }

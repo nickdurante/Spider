@@ -51,8 +51,10 @@ public class FolderActivity extends AppCompatActivity {
 
         //get file list in task
         GetFilesTask getFilesTask = new GetFilesTask();
-        String path = "/home/pi/java";
-        getFilesTask.execute(path);
+        Globals.currentPath = "/home/pi/java";
+        final PathHandler pathHandler = new PathHandler();
+
+        getFilesTask.execute(pathHandler.getCurrentPath());
 
 
 
@@ -62,6 +64,21 @@ public class FolderActivity extends AppCompatActivity {
         rvConnections.setAdapter(adapter);
         rvConnections.setLayoutManager(new LinearLayoutManager(this));
 
+        rvConnections.addOnItemTouchListener(
+                new RecyclerItemClickListener(this,rvConnections ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Log.d("ELEMENT", "onClick " + elements.get(position).name);
+                        if(elements.get(position).isDirectory){
+                            pathHandler.updatePath(elements.get(position).name);
+                            new GetFilesTask().execute(pathHandler.getCurrentPath());
+                        }
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        Log.d("ELEMENT", "onClick LONG " + position + " " + elements.get(position).name);
+                    }
+                })
+        );
 
     }
 
