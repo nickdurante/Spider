@@ -51,7 +51,7 @@ public class FolderActivity extends AppCompatActivity {
 
         //get file list in task
         GetFilesTask getFilesTask = new GetFilesTask();
-        Globals.currentPath = "/home/pi/java";
+
         final PathHandler pathHandler = new PathHandler();
 
         getFilesTask.execute(pathHandler.getCurrentPath());

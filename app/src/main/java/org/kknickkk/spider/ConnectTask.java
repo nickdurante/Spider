@@ -27,8 +27,9 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         String user = params[0];
         String IP = params[1];
         int port = Integer.valueOf(params[2]);
-        String privateKeyText = params[3];
 
+        boolean usingKey = Boolean.valueOf(params[4]);
+        Log.e("CONNECT", "Boolean is: " + usingKey);
         /*
         System.out.println("user ===> " + user);
         System.out.println("IP ===> " + IP);
@@ -37,10 +38,16 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         */
 
         try {
+            if(!usingKey){
+                session = jsch.getSession(user, IP, port);
+                session.setPassword(params[3]);
 
-            jsch.addIdentity("connection", readKey(privateKeyText), null, null);
-            session = jsch.getSession(user, IP, port);
-            session.setConfig("PreferredAuthentications", "publickey");
+            }else {
+                jsch.addIdentity("connection", readKey(params[3]), null, null);
+                session = jsch.getSession(user, IP, port);
+                session.setConfig("PreferredAuthentications", "publickey");
+            }
+
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
             Log.d("CONNECT TASK", "connected, returning session");

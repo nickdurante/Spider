@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -29,12 +31,18 @@ import com.jcraft.jsch.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    Switch sID;
+    EditText ePassword;
+    Button privateKeyButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_connection);
-
-
+        sID = findViewById(R.id.register_switch_id);
+        ePassword = findViewById(R.id.register_password);
+        privateKeyButton = findViewById(R.id.register_button_choose_file);
+        privateKeyButton.setVisibility(View.INVISIBLE);
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -42,6 +50,18 @@ public class RegisterActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 84);
         }
 
+
+        sID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ePassword.setVisibility(View.INVISIBLE);
+                    privateKeyButton.setVisibility(View.VISIBLE);
+                }else{
+                    ePassword.setVisibility(View.VISIBLE);
+                    privateKeyButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
 
@@ -56,19 +76,27 @@ public class RegisterActivity extends AppCompatActivity {
         EditText eIP = (EditText) findViewById(R.id.register_ip);
         EditText ePort = (EditText) findViewById(R.id.register_port);
         EditText eUser = (EditText) findViewById(R.id.register_user);
-        EditText ePassword = (EditText) findViewById(R.id.register_password);
-        Switch sID = findViewById(R.id.register_switch_id);
+
 
         String user = eUser.getText().toString();
         String IP = eIP.getText().toString();
         String port = ePort.getText().toString();
-
+        Globals.currentPath = "/home/" + user + "/";
 
         // TODO enable password login
-
-        //connection task
         connectTask = new ConnectTask();
-        connectTask.execute(user, IP, port, filecontent_private);
+
+        if(sID.isChecked()){
+            //use private key
+            connectTask.execute(user, IP, port, filecontent_private, String.valueOf(sID.isChecked()));
+        }else{
+            // use password
+            connectTask.execute(user, IP, port, ePassword.getText().toString(), String.valueOf(sID.isChecked()));
+        }
+
+
+
+
 
         try {
             session = connectTask.get();
