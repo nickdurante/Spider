@@ -17,5 +17,6 @@ public class Globals {
     public static ArrayList<DirectoryElement> elements;
     public static String currentPath;
     public static ProgressDialog mProgressDialog;
+    public static byte[] private_bytes;
 
 }

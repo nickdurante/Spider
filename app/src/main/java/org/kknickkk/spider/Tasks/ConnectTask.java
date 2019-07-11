@@ -6,6 +6,9 @@ import android.util.Log;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
+import org.kknickkk.spider.Globals;
+
 import java.nio.charset.StandardCharsets;
 
 
@@ -24,7 +27,7 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         String IP = params[1];
         int port = Integer.valueOf(params[2]);
 
-        boolean usingKey = Boolean.valueOf(params[4]);
+        boolean usingKey = Boolean.valueOf(params[3]);
         Log.e("CONNECT", "Boolean is: " + usingKey);
         /*
         System.out.println("user ===> " + user);
@@ -36,10 +39,10 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         try {
             if(!usingKey){
                 session = jsch.getSession(user, IP, port);
-                session.setPassword(params[3]);
+                session.setPassword(params[4]);
 
             }else {
-                jsch.addIdentity("connection", readKey(params[3]), null, null);
+                jsch.addIdentity("connection", Globals.private_bytes, null, null);
                 session = jsch.getSession(user, IP, port);
                 session.setConfig("PreferredAuthentications", "publickey");
             }
@@ -69,14 +72,6 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
     @Override
     protected void onCancelled(){
         return;
-    }
-
-
-    private static byte[] readKey(String keyFileContent){
-
-        keyFileContent = keyFileContent.replace("-----BEGIN RSA PRIVATE KEY-----", "-----BEGIN RSA PRIVATE KEY-----\r\n").replace("-----END RSA PRIVATE KEY-----", "\r\n-----END RSA PRIVATE KEY-----");
-        //System.out.println("keycontent ===> " + keyFileContent);
-        return keyFileContent.getBytes(StandardCharsets.US_ASCII);
     }
 
 }
