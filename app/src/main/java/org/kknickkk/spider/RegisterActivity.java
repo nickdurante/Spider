@@ -26,6 +26,8 @@ import java.util.concurrent.ExecutionException;
 
 import com.jcraft.jsch.*;
 
+import org.kknickkk.spider.Tasks.ConnectTask;
+
 public class RegisterActivity extends AppCompatActivity {
 
     Switch sID;

@@ -1,5 +1,7 @@
 package org.kknickkk.spider;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -11,17 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.kknickkk.spider.Tasks.DownloadTask;
+import org.kknickkk.spider.Tasks.GetFilesTask;
 
 import java.util.ArrayList;
 
 public class FolderActivity extends AppCompatActivity {
 
     ArrayList<DirectoryElement> elements = new ArrayList<DirectoryElement>();
-
+    ProgressDialog mProgressDialog;
 
     FolderAdapter adapter;
 
@@ -83,15 +87,40 @@ public class FolderActivity extends AppCompatActivity {
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        Log.d("ELEMENT", "onClick LONG " + position + " " + elements.get(position).name);
+                        DirectoryElement element = elements.get(position);
+                        Log.d("ELEMENT", "onClick LONG " + position + " " + element.name);
 
                         // TODO file download
                         Log.d("FEATURE", "here I should put the file download");
-                        Snackbar.make(view, "Download a file", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Download: " + element.name, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+
+
+                        mProgressDialog = new ProgressDialog(FolderActivity.this);
+                        mProgressDialog.setMessage("A message");
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        mProgressDialog.setCancelable(true);
+                        Globals.mProgressDialog = mProgressDialog;
+
+                        final DownloadTask downloadTask = new DownloadTask(FolderActivity.this);
+                        downloadTask.execute(element);
+
+
+                        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                downloadTask.cancel(true); //cancel the task
+                            }
+                        });
                     }
                 })
         );
+
+
+
+
 
     }
 

@@ -15,5 +15,19 @@ public class DirectoryElement {
         this.sftpInfo = sftpInfo;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public boolean isDirectory() {
+        return isDirectory;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public ChannelSftp.LsEntry getSftpInfo() {
+        return sftpInfo;
+    }
 }

@@ -1,4 +1,4 @@
-package org.kknickkk.spider;
+package org.kknickkk.spider.Tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;

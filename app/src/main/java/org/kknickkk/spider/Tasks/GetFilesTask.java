@@ -1,4 +1,4 @@
-package org.kknickkk.spider;
+package org.kknickkk.spider.Tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,6 +8,10 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+
+import org.kknickkk.spider.DirectoryElement;
+import org.kknickkk.spider.FolderAdapter;
+import org.kknickkk.spider.Globals;
 
 import java.util.ArrayList;
 import java.util.Vector;

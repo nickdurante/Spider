@@ -1,5 +1,7 @@
 package org.kknickkk.spider;
 
+import android.app.ProgressDialog;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.Session;
@@ -14,5 +16,6 @@ public class Globals {
     public static FolderAdapter rvAdapter;
     public static ArrayList<DirectoryElement> elements;
     public static String currentPath;
+    public static ProgressDialog mProgressDialog;
 
 }
