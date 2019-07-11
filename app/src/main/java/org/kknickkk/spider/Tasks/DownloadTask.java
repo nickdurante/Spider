@@ -32,6 +32,7 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         this.context = context;
     }
 
+    //prova
     @Override
     protected String doInBackground(DirectoryElement... params) {
         BufferedInputStream bis = null;
