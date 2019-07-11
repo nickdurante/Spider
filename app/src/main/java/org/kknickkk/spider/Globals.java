@@ -16,7 +16,11 @@ public class Globals {
     public static FolderAdapter rvAdapter;
     public static ArrayList<DirectoryElement> elements;
     public static String currentPath;
-    public static ProgressDialog mProgressDialog;
+    public static ProgressDialog mProgressDialogDownload;
+    public static ProgressDialog mProgressDialogUpload;
     public static byte[] private_bytes;
+    public static byte[] fileUpBytes;
+    public static String fileUpName;
+
 
 }

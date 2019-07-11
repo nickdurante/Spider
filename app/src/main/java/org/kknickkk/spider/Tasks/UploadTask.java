@@ -14,30 +14,32 @@ import org.kknickkk.spider.Globals;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.jcraft.jsch.ChannelSftp;
 
 
-public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
+public class UploadTask extends AsyncTask<String, Integer, String> {
 
     private Context context;
     private PowerManager.WakeLock mWakeLock;
-    ProgressDialog mProgressDialog = Globals.mProgressDialogDownload;
+    ProgressDialog mProgressDialog = Globals.mProgressDialogUpload;
 
-    public DownloadTask(Context context) {
+    public UploadTask(Context context) {
         this.context = context;
     }
 
     //prova
     @Override
-    protected String doInBackground(DirectoryElement... params) {
-        BufferedInputStream bis = null;
+    protected String doInBackground(String... params) {
+        ByteArrayInputStream bis = null;
         BufferedOutputStream bos = null;
-        DirectoryElement toDownload = params[0];
+        String destFolder = params[0];
 
         ChannelSftp channelSftp = (ChannelSftp) Globals.channel;
         long progress = 0;
@@ -45,22 +47,23 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         long size = 0;
         try {
             byte[] buffer = new byte[1024];
-            bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
-            File newFile = new File(Environment.getExternalStorageDirectory() + "/sftp_downloads/" + toDownload.getShortname());
-            //File newFile = new File(Environment.getExternalStorageDirectory().toString());
+            //bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
+            bis = new ByteArrayInputStream(Globals.fileUpBytes);
 
-            OutputStream os = new FileOutputStream(newFile);
+            File newFile = new File(destFolder);
+
+            OutputStream os = channelSftp.put(destFolder + "/" + Globals.fileUpName);
             bos = new BufferedOutputStream(os);
             int readCount;
-            size = toDownload.getSize();
+            size = Globals.fileUpBytes.length;
 
             while ((readCount = bis.read(buffer)) > 0) {
                 bos.write(buffer, 0, readCount);
                 progress += buffer.length;
                 percentage = progress*100 / size;
-                Log.d("DOWNLOAD", "size: " + size);
-                Log.d("DOWNLOAD", "progress: " + progress);
-                Log.d("DOWNLOAD", "Writing: " + percentage + "%");
+                Log.d("UPLOAD", "size: " + size);
+                Log.d("UPLOAD", "progress: " + progress);
+                Log.d("UPLOAD", "Writing: " + percentage + "%");
 
                 publishProgress((int)percentage);
             }
@@ -70,9 +73,9 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         } finally {
             try {
                 if (bis != null)
-                        bis.close();
+                    bis.close();
                 if (bos != null)
-                        bos.close();
+                    bos.close();
             } catch (IOException ignored) { }
         }
         return null;
@@ -105,8 +108,8 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         mWakeLock.release();
         mProgressDialog.dismiss();
         if (result != null)
-            Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Upload error: " + result, Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "File uploaded", Toast.LENGTH_SHORT).show();
     }
 }
