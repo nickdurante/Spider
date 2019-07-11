@@ -40,14 +40,14 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         DirectoryElement toDownload = params[0];
 
         ChannelSftp channelSftp = (ChannelSftp) Globals.channel;
-        int progress = 0;
+        long progress = 0;
         float percentage = 0;
         long size = 0;
         try {
             byte[] buffer = new byte[1024];
             bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
-            //File newFile = new File(Environment.getExternalStorageDirectory() + "/downloaded.txt");
-            File newFile = new File(Environment.getExternalStorageDirectory().toString());
+            File newFile = new File(Environment.getExternalStorageDirectory() + "/sftp_downloads/" + toDownload.getShortname());
+            //File newFile = new File(Environment.getExternalStorageDirectory().toString());
 
             OutputStream os = new FileOutputStream(newFile);
             bos = new BufferedOutputStream(os);
@@ -56,8 +56,10 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
 
             while ((readCount = bis.read(buffer)) > 0) {
                 bos.write(buffer, 0, readCount);
-
-                percentage = (progress / size)*100;
+                progress += buffer.length;
+                percentage = progress*100 / size;
+                Log.d("DOWNLOAD", "size: " + size);
+                Log.d("DOWNLOAD", "progress: " + progress);
                 Log.d("DOWNLOAD", "Writing: " + percentage + "%");
 
                 publishProgress((int)percentage);

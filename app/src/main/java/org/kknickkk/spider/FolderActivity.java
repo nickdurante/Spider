@@ -97,7 +97,7 @@ public class FolderActivity extends AppCompatActivity {
 
 
                         mProgressDialog = new ProgressDialog(FolderActivity.this);
-                        mProgressDialog.setMessage("A message");
+                        mProgressDialog.setMessage("Downloading: " + element.getShortname() + " (" + element.getSizeMB() + "MB)");
                         mProgressDialog.setIndeterminate(true);
                         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                         mProgressDialog.setCancelable(true);
