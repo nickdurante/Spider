@@ -2,6 +2,11 @@
 
 Currently a work in progress SFTP client for Android
 
+## Download
+
+First version released ! 
+[v0.1](https://github.com/nickdurante/Spider/releases/tag/v0.1)
+
 I couldn't find a SFTP client for android that was open source and since logging to a private server could be a sensitive subject, I've decided to write one.
 
 Spider uses the ```jsch``` library to open the secure channel communication
@@ -11,10 +16,11 @@ Spider uses the ```jsch``` library to open the secure channel communication
 + Login with password
 + Login with private key
 + File browsing
-
++ File upload
++ File download
 
 ## To do:
 
-+ [ ] Ability to upload files
-+ [ ] Ability to download files
++ [x] Ability to upload files
++ [x] Ability to download files
 + [ ] Error handling
