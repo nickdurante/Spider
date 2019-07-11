@@ -4,8 +4,8 @@ Currently a work in progress SFTP client for Android
 
 ## Download
 
-First version released ! 
-[v0.1](https://github.com/nickdurante/Spider/releases/tag/v0.1)
+
+[Check the release page](https://github.com/nickdurante/Spider/releases)
 
 I couldn't find a SFTP client for android that was open source and since logging to a private server could be a sensitive subject, I've decided to write one.
 
