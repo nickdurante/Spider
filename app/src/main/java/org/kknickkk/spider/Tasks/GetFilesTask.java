@@ -2,7 +2,9 @@ package org.kknickkk.spider.Tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
@@ -33,18 +35,20 @@ public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.
             ChannelSftp channelSftp = (ChannelSftp) channel;
 
             channel.connect();
-            channelSftp.cd(path);
-            Vector<ChannelSftp.LsEntry> list = channelSftp.ls("*");
-            Log.d("GETFILELIST TASK","Files are:");
 
-            for(ChannelSftp.LsEntry entry : list) {
-                Log.d("GETFILELIST TASK", entry.getFilename());
 
-            }
-            Globals.channel = channel;
-            Globals.currentDir = list;
+                channelSftp.cd(path);
+                Vector<ChannelSftp.LsEntry> list = channelSftp.ls("*");
+                Log.d("GETFILELIST TASK", "Files are:");
 
-            return list;
+                for (ChannelSftp.LsEntry entry : list) {
+                    Log.d("GETFILELIST TASK", entry.getFilename());
+
+                }
+                Globals.channel = channel;
+                Globals.currentDir = list;
+
+                return list;
 
         } catch (JSchException | SftpException e) {
             e.printStackTrace();
@@ -71,7 +75,8 @@ public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.
                 elements.add(new DirectoryElement(entry.getFilename(), entry.getAttrs().isDir(), entry.getAttrs().getSize(), entry));
             }
         }
-       adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        Globals.toolbar.setTitle(Globals.currentPath);
     }
 
     @Override

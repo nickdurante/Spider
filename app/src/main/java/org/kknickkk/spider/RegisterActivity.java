@@ -66,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     Uri uri;
-    String filecontent_private;
     byte[] filecontent_bytes;
     ConnectTask connectTask;
     Session session;
@@ -82,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         String user = eUser.getText().toString();
         String IP = eIP.getText().toString();
         String port = ePort.getText().toString();
-        Globals.currentPath = "/home/" + user + "/";
+        Globals.currentPath = "/home/" + user;
 
         // TODO enable password login
         connectTask = new ConnectTask();
@@ -95,10 +94,6 @@ public class RegisterActivity extends AppCompatActivity {
             connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), ePassword.getText().toString());
         }
 
-
-
-
-
         try {
             session = connectTask.get();
         } catch (ExecutionException e) {
@@ -107,12 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Intent myIntent = new Intent(RegisterActivity.this, FolderActivity.class);
+        Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
         //myIntent.putExtra("session", session);
         Globals.session = session;
         connectTask.cancel(true);
         Log.d("REGISTER ACTIVITY", "launching Folder activity");
-        RegisterActivity.this.startActivity(myIntent);
+        RegisterActivity.this.startActivity(FolderIntent);
         //close activity
         //finish();
     }
@@ -190,20 +185,5 @@ public class RegisterActivity extends AppCompatActivity {
         // and then we can return your byte array.
         return byteBuffer.toByteArray();
     }
-
-    private String readTextFromUri(Uri uri) throws IOException {
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        inputStream.close();
-        reader.close();
-        return stringBuilder.toString();
-    }
-
-
 
 }

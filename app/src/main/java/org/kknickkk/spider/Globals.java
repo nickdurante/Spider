@@ -2,6 +2,8 @@ package org.kknickkk.spider;
 
 import android.app.ProgressDialog;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.Session;
@@ -21,6 +23,7 @@ public class Globals {
     public static byte[] private_bytes;
     public static byte[] fileUpBytes;
     public static String fileUpName;
+    public static Toolbar toolbar;
 
 
 }

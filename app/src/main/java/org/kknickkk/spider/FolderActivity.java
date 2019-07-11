@@ -39,6 +39,7 @@ public class FolderActivity extends AppCompatActivity {
     Uri uri;
     byte[] fileUpBytes;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("FOLDER ACTIVITY", "started");
@@ -47,27 +48,24 @@ public class FolderActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final PathHandler pathHandler = new PathHandler();
+
+        Globals.toolbar = toolbar;
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO upload a file
-                Snackbar.make(view, "Upload a file", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Upload a file", Snackbar.LENGTH_LONG).show();
 
                 performFileSearchUpload();
-
             }
         });
 
-
         Globals.elements = elements;
-
         RecyclerView rvConnections = findViewById(R.id.rvConnections);
 
 
-        //Intent intent = getIntent();
-        //Session session = (Session) intent.getCharSequenceExtra("session");
         Session session = Globals.session;
         Log.d("FOLDER ACTIVITY", "got session: " + session.getHost());
         // set the adapter
@@ -76,13 +74,7 @@ public class FolderActivity extends AppCompatActivity {
 
         //get file list in task
         GetFilesTask getFilesTask = new GetFilesTask();
-
-        final PathHandler pathHandler = new PathHandler();
-
         getFilesTask.execute(pathHandler.getCurrentPath());
-
-
-
 
         // link all
 
@@ -96,9 +88,12 @@ public class FolderActivity extends AppCompatActivity {
                         Log.d("ELEMENT", "onClick " + element.name);
                         if(element.isDirectory || element.sftpInfo.getAttrs().isLink()){
                             pathHandler.updatePath(element.name);
+
                             new GetFilesTask().execute(pathHandler.getCurrentPath());
+
+                            }
                         }
-                    }
+
 
                     @Override public void onLongItemClick(View view, int position) {
                         DirectoryElement element = elements.get(position);
@@ -106,8 +101,7 @@ public class FolderActivity extends AppCompatActivity {
 
 
                         if(!element.isDirectory && !element.sftpInfo.getAttrs().isLink()) {
-                            Snackbar.make(view, "Download: " + element.name, Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            Snackbar.make(view, "Download: " + element.name, Snackbar.LENGTH_LONG).show();
 
 
                             mProgressDialog = new ProgressDialog(FolderActivity.this);

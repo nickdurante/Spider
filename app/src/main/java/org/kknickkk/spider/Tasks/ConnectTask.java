@@ -9,7 +9,6 @@ import com.jcraft.jsch.Session;
 
 import org.kknickkk.spider.Globals;
 
-import java.nio.charset.StandardCharsets;
 
 
 public class ConnectTask extends AsyncTask<String, Integer, Session> {
