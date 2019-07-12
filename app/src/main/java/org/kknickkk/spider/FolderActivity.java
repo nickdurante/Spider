@@ -126,11 +126,6 @@ public class FolderActivity extends AppCompatActivity {
                     }
                 })
         );
-
-
-
-
-
     }
 
 

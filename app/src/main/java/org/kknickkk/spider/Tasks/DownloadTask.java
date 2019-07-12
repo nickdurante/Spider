@@ -46,8 +46,13 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         try {
             byte[] buffer = new byte[1024];
             bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
-            File newFile = new File(Environment.getExternalStorageDirectory() + "/sftp_downloads/" + toDownload.getShortname());
-            //File newFile = new File(Environment.getExternalStorageDirectory().toString());
+
+            File f = new File(Environment.getExternalStorageDirectory() + "/" + Globals.downloadFolder);
+            if (f == null || !f.exists()) {
+                f.mkdirs();
+            }
+
+            File newFile = new File(Environment.getExternalStorageDirectory() + "/" + Globals.downloadFolder + "/" + toDownload.getShortname());
 
             OutputStream os = new FileOutputStream(newFile);
             bos = new BufferedOutputStream(os);
@@ -107,6 +112,6 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         if (result != null)
             Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "File downloaded in: " + Environment.getExternalStorageDirectory() + "/" + Globals.downloadFolder, Toast.LENGTH_LONG).show();
     }
 }
