@@ -17,24 +17,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="192.168.1.114" />
+        android:hint="IP address"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/register_port"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="numberDecimal"
-        android:text="22" />
+        android:hint="Port"
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/register_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="pi" />
+        android:hint="User"
+        android:inputType="textPersonName" />
 
     <Switch
         android:id="@+id/register_switch_id"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="password"
+        android:hint="password"
         android:inputType="textPassword" />
 
     <Button
