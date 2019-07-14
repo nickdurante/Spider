@@ -14,6 +14,7 @@ import org.kknickkk.spider.FolderAdapter;
 import org.kknickkk.spider.Globals;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
 
 public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.LsEntry>> {
@@ -72,6 +73,7 @@ public class GetFilesTask extends AsyncTask<String, Integer, Vector<ChannelSftp.
                 Log.d("FOLDER ACTIVITY", "adding to elements:" + entry.getFilename());
                 elements.add(new DirectoryElement(entry.getFilename(), entry.getAttrs().isDir(), entry.getAttrs().getSize(), entry));
             }
+            Collections.sort(elements);
         }
         adapter.notifyDataSetChanged();
         Globals.toolbar.setTitle(Globals.currentPath);

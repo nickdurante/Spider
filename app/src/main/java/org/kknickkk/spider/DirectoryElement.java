@@ -2,12 +2,12 @@ package org.kknickkk.spider;
 
 import com.jcraft.jsch.ChannelSftp;
 
-public class DirectoryElement {
+public class DirectoryElement implements Comparable<DirectoryElement>{
     String name;
     boolean isDirectory;
-    String shortname;
-    Long size;
-    ChannelSftp.LsEntry sftpInfo;
+    private String shortname;
+    private Long size;
+    private ChannelSftp.LsEntry sftpInfo;
     long sizeMB;
 
     public DirectoryElement(String name, boolean isDirectory, Long size, ChannelSftp.LsEntry sftpInfo){
@@ -21,6 +21,11 @@ public class DirectoryElement {
 
     public long getSizeMB() {
         return sizeMB;
+    }
+    @Override
+    public int compareTo(DirectoryElement o) {
+
+        return name.compareTo(o.name);
     }
 
     public String getShortname() {
