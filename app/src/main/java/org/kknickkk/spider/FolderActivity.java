@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -40,7 +41,6 @@ public class FolderActivity extends AppCompatActivity {
     byte[] fileUpBytes;
     final PathHandler pathHandler = new PathHandler();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("FOLDER ACTIVITY", "started");
@@ -64,7 +64,7 @@ public class FolderActivity extends AppCompatActivity {
 
         Globals.elements = elements;
         RecyclerView rvConnections = findViewById(R.id.rvConnections);
-
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_view);
 
         Session session = Globals.session;
         Log.d("FOLDER ACTIVITY", "got session: " + session.getHost());
@@ -126,6 +126,16 @@ public class FolderActivity extends AppCompatActivity {
                     }
                 })
         );
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new GetFilesTask().execute(pathHandler.getCurrentPath());
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
     }
 
 
