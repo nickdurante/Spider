@@ -38,6 +38,7 @@ public class FolderActivity extends AppCompatActivity {
     FolderAdapter adapter;
     Uri uri;
     byte[] fileUpBytes;
+    final PathHandler pathHandler = new PathHandler();
 
 
     @Override
@@ -48,7 +49,6 @@ public class FolderActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final PathHandler pathHandler = new PathHandler();
 
         Globals.toolbar = toolbar;
 
@@ -128,6 +128,13 @@ public class FolderActivity extends AppCompatActivity {
         );
     }
 
+
+    @Override
+    public void onBackPressed() {
+        pathHandler.updatePath("..");
+        new GetFilesTask().execute(pathHandler.getCurrentPath());
+
+    }
 
 
     @Override

@@ -2,9 +2,7 @@ package org.kknickkk.spider.Tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
