@@ -5,9 +5,9 @@ import com.jcraft.jsch.ChannelSftp;
 public class DirectoryElement implements Comparable<DirectoryElement>{
     String name;
     boolean isDirectory;
-    private String shortname;
-    private Long size;
-    private ChannelSftp.LsEntry sftpInfo;
+    String shortname;
+    Long size;
+    ChannelSftp.LsEntry sftpInfo;
     long sizeMB;
 
     public DirectoryElement(String name, boolean isDirectory, Long size, ChannelSftp.LsEntry sftpInfo){
