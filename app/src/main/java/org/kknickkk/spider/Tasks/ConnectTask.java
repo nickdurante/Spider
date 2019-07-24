@@ -28,12 +28,7 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
 
         boolean usingKey = Boolean.valueOf(params[3]);
         Log.e("CONNECT", "Boolean is: " + usingKey);
-        /*
-        System.out.println("user ===> " + user);
-        System.out.println("IP ===> " + IP);
-        System.out.println("port ===> " + port);
-        System.out.println("priv ===> " + priv);
-        */
+
 
         try {
             if(!usingKey){

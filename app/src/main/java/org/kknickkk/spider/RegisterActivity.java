@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jcraft.jsch.*;
 
 import org.kknickkk.spider.Tasks.ConnectTask;
@@ -83,7 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
         String port = ePort.getText().toString();
         Globals.currentPath = "/home/" + user;
 
-        // TODO enable password login
+        Snackbar.make(view, "Connecting...", Snackbar.LENGTH_LONG).show();
+
         connectTask = new ConnectTask();
 
         if(sID.isChecked()){
@@ -96,20 +98,25 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             session = connectTask.get();
+            if(session == null){
+                Snackbar.make(view, "Could not connect", Snackbar.LENGTH_LONG).show();
+            }
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
-        //myIntent.putExtra("session", session);
-        Globals.session = session;
-        connectTask.cancel(true);
-        Log.d("REGISTER ACTIVITY", "launching Folder activity");
-        RegisterActivity.this.startActivity(FolderIntent);
-        //close activity
-        //finish();
+
+        if(session != null) {
+            Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
+
+            Globals.session = session;
+            connectTask.cancel(true);
+            Log.d("REGISTER ACTIVITY", "launching Folder activity");
+            RegisterActivity.this.startActivity(FolderIntent);
+        }
     }
 
 
