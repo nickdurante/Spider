@@ -32,7 +32,7 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         this.context = context;
     }
 
-    //prova
+
     @Override
     protected String doInBackground(DirectoryElement... params) {
         BufferedInputStream bis = null;
@@ -62,12 +62,12 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
             while ((readCount = bis.read(buffer)) > 0) {
                 bos.write(buffer, 0, readCount);
                 progress += buffer.length;
-                percentage = progress*100 / size;
+                percentage = progress * 100 / size;
                 Log.d("DOWNLOAD", "size: " + size);
                 Log.d("DOWNLOAD", "progress: " + progress);
                 Log.d("DOWNLOAD", "Writing: " + percentage + "%");
 
-                publishProgress((int)percentage);
+                publishProgress((int) percentage);
             }
 
         } catch (Exception e) {
@@ -75,10 +75,11 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         } finally {
             try {
                 if (bis != null)
-                        bis.close();
+                    bis.close();
                 if (bos != null)
-                        bos.close();
-            } catch (IOException ignored) { }
+                    bos.close();
+            } catch (IOException ignored) {
+            }
         }
         return null;
     }

@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,11 +18,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 
 
@@ -54,10 +53,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         sID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     ePassword.setVisibility(View.INVISIBLE);
                     privateKeyButton.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     ePassword.setVisibility(View.VISIBLE);
                     privateKeyButton.setVisibility(View.INVISIBLE);
                 }
@@ -71,12 +70,14 @@ public class RegisterActivity extends AppCompatActivity {
     ConnectTask connectTask;
     Session session;
 
-    /** Called when the user taps the Send button */
+    /**
+     * Called when the user taps the Send button
+     */
     public void saveConnection(View view) {
         // Do something in response to button
-        EditText eIP = (EditText) findViewById(R.id.register_ip);
-        EditText ePort = (EditText) findViewById(R.id.register_port);
-        EditText eUser = (EditText) findViewById(R.id.register_user);
+        EditText eIP = findViewById(R.id.register_ip);
+        EditText ePort = findViewById(R.id.register_port);
+        EditText eUser = findViewById(R.id.register_user);
 
 
         String user = eUser.getText().toString();
@@ -84,21 +85,22 @@ public class RegisterActivity extends AppCompatActivity {
         String port = ePort.getText().toString();
         Globals.currentPath = "/home/" + user;
 
-        Snackbar.make(view, "Connecting...", Snackbar.LENGTH_LONG).show();
 
-        connectTask = new ConnectTask();
+        connectTask = new ConnectTask(RegisterActivity.this);
 
-        if(sID.isChecked()){
+        if (sID.isChecked()) {
             //use private key
             connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()));
-        }else{
+        } else {
             // use password
             connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), ePassword.getText().toString());
         }
 
         try {
             session = connectTask.get();
-            if(session == null){
+
+
+            if (session == null) {
                 Snackbar.make(view, "Could not connect", Snackbar.LENGTH_LONG).show();
             }
 
@@ -109,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-        if(session != null) {
+        if (session != null) {
             Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
 
             Globals.session = session;
@@ -119,8 +121,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Globals.mProgressDialogConnect != null && Globals.mProgressDialogConnect.isShowing())
+            Globals.mProgressDialogConnect.dismiss();
+    }
 
     private static final int READ_REQUEST_CODE_PRIVATEKEY = 42;
 
@@ -145,7 +151,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         startActivityForResult(intent, READ_REQUEST_CODE_PRIVATEKEY);
     }
-
 
 
     @Override

@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>{
+public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView filename;
@@ -39,7 +39,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 
     private List<DirectoryElement> mDirectoryElement;
 
-    public FolderAdapter(List<DirectoryElement> dir){
+    public FolderAdapter(List<DirectoryElement> dir) {
         mDirectoryElement = dir;
     }
 
@@ -65,11 +65,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         DirectoryElement directoryElement = mDirectoryElement.get(position);
 
         // Set item views based on your views and data model
-        if(directoryElement.isDirectory){
+        if (directoryElement.isDirectory) {
             viewHolder.icon.setImageResource(R.drawable.folder);
-        }else if(directoryElement.sftpInfo.getAttrs().isLink()){
+        } else if (directoryElement.sftpInfo.getAttrs().isLink()) {
             viewHolder.icon.setImageResource(R.drawable.right);
-        }else {
+        } else {
             viewHolder.icon.setImageResource(R.drawable.file);
         }
         viewHolder.filename.setText(directoryElement.name);

@@ -34,7 +34,6 @@ public class UploadTask extends AsyncTask<String, Integer, String> {
         this.context = context;
     }
 
-    //prova
     @Override
     protected String doInBackground(String... params) {
         ByteArrayInputStream bis = null;
@@ -60,12 +59,12 @@ public class UploadTask extends AsyncTask<String, Integer, String> {
             while ((readCount = bis.read(buffer)) > 0) {
                 bos.write(buffer, 0, readCount);
                 progress += buffer.length;
-                percentage = progress*100 / size;
+                percentage = progress * 100 / size;
                 Log.d("UPLOAD", "size: " + size);
                 Log.d("UPLOAD", "progress: " + progress);
                 Log.d("UPLOAD", "Writing: " + percentage + "%");
 
-                publishProgress((int)percentage);
+                publishProgress((int) percentage);
             }
 
         } catch (Exception e) {
@@ -76,7 +75,8 @@ public class UploadTask extends AsyncTask<String, Integer, String> {
                     bis.close();
                 if (bos != null)
                     bos.close();
-            } catch (IOException ignored) { }
+            } catch (IOException ignored) {
+            }
         }
         return null;
     }

@@ -1,14 +1,13 @@
 package org.kknickkk.spider;
 
 
-
-public class Connection{
+public class Connection {
     private String ip;
     private int port;
     private String user;
     private String key_path;
 
-    public Connection(String ip, int port, String user, String key_path){
+    public Connection(String ip, int port, String user, String key_path) {
         this.ip = ip;
         this.port = port;
         this.user = user;

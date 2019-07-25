@@ -25,5 +25,6 @@ public class Globals {
     public static String fileUpName;
     public static Toolbar toolbar;
     public static String downloadFolder = "SFTP_downloads";
+    public static ProgressDialog mProgressDialogConnect;
 
 }

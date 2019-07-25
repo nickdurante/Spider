@@ -1,5 +1,7 @@
 package org.kknickkk.spider.Tasks;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,13 +12,27 @@ import com.jcraft.jsch.Session;
 import org.kknickkk.spider.Globals;
 
 
-
 public class ConnectTask extends AsyncTask<String, Integer, Session> {
 
 
     Session session;
 
-    protected Session doInBackground(String...params) {
+    private ProgressDialog dialog;
+
+    public ConnectTask(Context context){
+        dialog = new ProgressDialog(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        Log.d("CONNECT", "should show spinner");
+        this.dialog.setMessage("Connecting...");
+        this.dialog.show();
+        Globals.mProgressDialogConnect = dialog;
+    }
+
+
+    protected Session doInBackground(String... params) {
 
         Log.d("CONNECT TASK", "Started do on background");
 
@@ -31,11 +47,11 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
 
 
         try {
-            if(!usingKey){
+            if (!usingKey) {
                 session = jsch.getSession(user, IP, port);
                 session.setPassword(params[4]);
 
-            }else {
+            } else {
                 jsch.addIdentity("connection", Globals.private_bytes, null, null);
                 session = jsch.getSession(user, IP, port);
                 session.setConfig("PreferredAuthentications", "publickey");
@@ -45,10 +61,14 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
             session.connect();
             Log.d("CONNECT TASK", "connected, returning session");
 
+            Globals.session = session;
             return session;
 
-        }catch (JSchException e){
+        } catch (JSchException e) {
             e.printStackTrace();
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
             return null;
         }
 
@@ -59,12 +79,16 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
     }
 
     protected void onPostExecute(Session result) {
-        //...
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
 
+
     @Override
-    protected void onCancelled(){
+    protected void onCancelled() {
+
         return;
     }
 

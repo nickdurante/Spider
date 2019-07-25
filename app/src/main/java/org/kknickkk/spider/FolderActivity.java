@@ -2,11 +2,11 @@ package org.kknickkk.spider;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.jcraft.jsch.Session;
@@ -82,25 +82,27 @@ public class FolderActivity extends AppCompatActivity {
         rvConnections.setLayoutManager(new LinearLayoutManager(this));
 
         rvConnections.addOnItemTouchListener(
-                new RecyclerItemClickListener(this,rvConnections ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                new RecyclerItemClickListener(this, rvConnections, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         DirectoryElement element = elements.get(position);
                         Log.d("ELEMENT", "onClick " + element.name);
-                        if(element.isDirectory || element.sftpInfo.getAttrs().isLink()){
+                        if (element.isDirectory || element.sftpInfo.getAttrs().isLink()) {
                             pathHandler.updatePath(element.name);
 
                             new GetFilesTask().execute(pathHandler.getCurrentPath());
 
-                            }
                         }
+                    }
 
 
-                    @Override public void onLongItemClick(View view, int position) {
+                    @Override
+                    public void onLongItemClick(View view, int position) {
                         DirectoryElement element = elements.get(position);
                         Log.d("ELEMENT", "onClick LONG " + position + " " + element.name);
 
 
-                        if(!element.isDirectory && !element.sftpInfo.getAttrs().isLink()) {
+                        if (!element.isDirectory && !element.sftpInfo.getAttrs().isLink()) {
                             Snackbar.make(view, "Download: " + element.name, Snackbar.LENGTH_LONG).show();
 
 
@@ -108,13 +110,13 @@ public class FolderActivity extends AppCompatActivity {
                             mProgressDialog.setMessage("Downloading: " + element.getShortname() + " (" + element.getSizeMB() + "MB)");
                             mProgressDialog.setIndeterminate(true);
                             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            mProgressDialog.setCancelable(true);
+                            mProgressDialog.setCancelable(false);
                             Globals.mProgressDialogDownload = mProgressDialog;
 
                             final DownloadTask downloadTask = new DownloadTask(FolderActivity.this);
                             downloadTask.execute(element);
 
-
+                            /*
                             mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
                                 @Override
@@ -122,6 +124,7 @@ public class FolderActivity extends AppCompatActivity {
                                     downloadTask.cancel(true); //cancel the task
                                 }
                             });
+                            */
                         }
                     }
                 })
@@ -148,7 +151,7 @@ public class FolderActivity extends AppCompatActivity {
 
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
     }
@@ -180,8 +183,6 @@ public class FolderActivity extends AppCompatActivity {
     }
 
 
-
-
     private static final int READ_REQUEST_CODE_UPLOAD = 84;
 
     /**
@@ -205,7 +206,6 @@ public class FolderActivity extends AppCompatActivity {
 
         startActivityForResult(intent, READ_REQUEST_CODE_UPLOAD);
     }
-
 
 
     @Override
@@ -235,13 +235,13 @@ public class FolderActivity extends AppCompatActivity {
                     mProgressDialog.setMessage("Uploading: " + uri.getLastPathSegment());
                     mProgressDialog.setIndeterminate(true);
                     mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    mProgressDialog.setCancelable(true);
+                    mProgressDialog.setCancelable(false);
                     Globals.mProgressDialogUpload = mProgressDialog;
 
                     final UploadTask uploadTask = new UploadTask(FolderActivity.this);
                     uploadTask.execute(Globals.currentPath);
 
-
+                    /*
                     mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
                         @Override
@@ -249,7 +249,7 @@ public class FolderActivity extends AppCompatActivity {
                             uploadTask.cancel(true); //cancel the task
                         }
                     });
-
+                */
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -300,7 +300,6 @@ public class FolderActivity extends AppCompatActivity {
         // and then we can return your byte array.
         return byteBuffer.toByteArray();
     }
-
 
 
 }
