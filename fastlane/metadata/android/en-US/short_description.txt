@@ -1,0 +1,1 @@
+This application enables you to connect to your SFTP server using a password or a PEM private key.
