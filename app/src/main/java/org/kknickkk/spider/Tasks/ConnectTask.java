@@ -31,7 +31,6 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         Globals.mProgressDialogConnect = dialog;
     }
 
-
     protected Session doInBackground(String... params) {
 
         Log.d("CONNECT TASK", "Started do on background");
@@ -71,7 +70,6 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
             }
             return null;
         }
-
     }
 
     protected void onProgressUpdate(Integer... progress) {
@@ -84,12 +82,8 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         }
     }
 
-
-
     @Override
     protected void onCancelled() {
-
         return;
     }
-
 }

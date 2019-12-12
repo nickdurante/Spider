@@ -105,7 +105,6 @@ public class FolderActivity extends AppCompatActivity {
                         if (!element.isDirectory && !element.sftpInfo.getAttrs().isLink()) {
                             Snackbar.make(view, "Download: " + element.name, Snackbar.LENGTH_LONG).show();
 
-
                             mProgressDialog = new ProgressDialog(FolderActivity.this);
                             mProgressDialog.setMessage("Downloading: " + element.getShortname() + " (" + element.getSizeMB() + "MB)");
                             mProgressDialog.setIndeterminate(true);
@@ -116,15 +115,6 @@ public class FolderActivity extends AppCompatActivity {
                             final DownloadTask downloadTask = new DownloadTask(FolderActivity.this);
                             downloadTask.execute(element);
 
-                            /*
-                            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                                @Override
-                                public void onCancel(DialogInterface dialog) {
-                                    downloadTask.cancel(true); //cancel the task
-                                }
-                            });
-                            */
                         }
                     }
                 })
@@ -241,16 +231,6 @@ public class FolderActivity extends AppCompatActivity {
                     final UploadTask uploadTask = new UploadTask(FolderActivity.this);
                     uploadTask.execute(Globals.currentPath);
 
-                    /*
-                    mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            uploadTask.cancel(true); //cancel the task
-                        }
-                    });
-                */
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -263,24 +243,30 @@ public class FolderActivity extends AppCompatActivity {
 
     public String getFileName(Uri uri) {
         String result = null;
-        if (uri.getScheme().equals("content")) {
+        if ( uri.getScheme() != null && uri.getScheme().equals("content")) {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             try {
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             } finally {
-                cursor.close();
+                if(cursor != null) {
+                    cursor.close();
+                }
             }
         }
         if (result == null) {
             result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
+            if (result != null) {
+                int cut = result.lastIndexOf('/');
+                if (cut != -1) {
+                    result = result.substring(cut + 1);
+                }
             }
+            return result;
+        }else{
+            return "";
         }
-        return result;
     }
 
     public byte[] readBytes(InputStream inputStream) throws IOException {

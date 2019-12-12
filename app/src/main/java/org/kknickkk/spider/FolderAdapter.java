@@ -32,10 +32,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             icon = itemView.findViewById(R.id.icon);
 
         }
-
-
     }
-
 
     private List<DirectoryElement> mDirectoryElement;
 

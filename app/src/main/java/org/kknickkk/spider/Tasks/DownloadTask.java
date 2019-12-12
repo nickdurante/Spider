@@ -1,6 +1,5 @@
 package org.kknickkk.spider.Tasks;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,10 +7,8 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
-
 import org.kknickkk.spider.DirectoryElement;
 import org.kknickkk.spider.Globals;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -48,7 +45,7 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
             bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
 
             File f = new File(Environment.getExternalStorageDirectory() + "/" + Globals.downloadFolder);
-            if (f == null || !f.exists()) {
+            if ( !f.exists() ) {
                 f.mkdirs();
             }
 
@@ -91,9 +88,13 @@ public class DownloadTask extends AsyncTask<DirectoryElement, Integer, String> {
         // take CPU lock to prevent CPU from going off if the user
         // presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                getClass().getName());
-        mWakeLock.acquire();
+        try {
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+            mWakeLock.acquire(10*60);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
         mProgressDialog.show();
     }
 
