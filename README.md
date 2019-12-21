@@ -1,8 +1,9 @@
 # Spider
+![](app/src/main/res/drawable/logo.png)
+[<img alt="Get it on F-Droid" height="80" src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png">](https://f-droid.org/packages/org.kknickkk.spider/)
 
-[](app/src/main/res/drawable/logo.png)
 
-Currently a work in progress SFTP client for Android
+This is a simple SFTP client for Android.
 
 I couldn't find a SFTP client for android that was open source and since logging to a private server could be a sensitive subject, I've decided to write one.
 
@@ -25,8 +26,3 @@ Logo designed by mavadee from Flaticon
 + File upload
 + File download
 
-## To do:
-
-+ [x] Ability to upload files
-+ [x] Ability to download files
-+ [ ] Error handling
