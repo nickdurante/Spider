@@ -2,6 +2,7 @@ package org.kknickkk.spider;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
@@ -216,6 +218,7 @@ public class FolderActivity extends AppCompatActivity {
                 Globals.fileUpName = getFileName(uri);
 
                 Log.d("UPLOAD", "got: " + uri.toString());
+                Log.d("UPLOAD", "filename: " + Globals.fileUpName);
 
                 try {
                     fileUpBytes = readBytes(getContentResolver().openInputStream(uri));
@@ -240,23 +243,9 @@ public class FolderActivity extends AppCompatActivity {
 
     }
 
-
     public String getFileName(Uri uri) {
-        String result = null;
-        if ( uri.getScheme() != null && uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                if(cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
+
+            String result = uri.getLastPathSegment();
             if (result != null) {
                 int cut = result.lastIndexOf('/');
                 if (cut != -1) {
@@ -264,10 +253,8 @@ public class FolderActivity extends AppCompatActivity {
                 }
             }
             return result;
-        }else{
-            return "";
         }
-    }
+
 
     public byte[] readBytes(InputStream inputStream) throws IOException {
         // this dynamically extends to take the bytes you read

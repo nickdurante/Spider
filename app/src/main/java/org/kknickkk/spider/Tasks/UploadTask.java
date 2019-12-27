@@ -41,8 +41,8 @@ public class UploadTask extends AsyncTask<String, Integer, String> {
             //bis = new BufferedInputStream(channelSftp.get(toDownload.getName()));
             bis = new ByteArrayInputStream(Globals.fileUpBytes);
 
-            File newFile = new File(destFolder);
-
+            File newFile = new File(destFolder + "/" + Globals.fileUpName);
+            Log.d("UPLOAD task", "Destination: " + destFolder + "/" + Globals.fileUpName);
             OutputStream os = channelSftp.put(destFolder + "/" + Globals.fileUpName);
             bos = new BufferedOutputStream(os);
             int readCount;
