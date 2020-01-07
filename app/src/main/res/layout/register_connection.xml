@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="performFileSearchPrivate"
-        android:text="Choose private key" />
+        android:text="Choose PEM private key..." />
 
     <Button
         android:id="@+id/register_button_save"

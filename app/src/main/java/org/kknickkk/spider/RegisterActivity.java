@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -169,14 +170,26 @@ public class RegisterActivity extends AppCompatActivity {
                 uri = resultData.getData();
                 try {
                     filecontent_bytes = readBytes(getContentResolver().openInputStream(uri));
-                    Globals.private_bytes = filecontent_bytes;
+                    if(checkKey(filecontent_bytes)) {
+                        Globals.private_bytes = filecontent_bytes;
+                    }else{
+                        Globals.private_bytes = null;
+                        Toast.makeText(getApplicationContext(), "Selected is not in PEM format", Toast.LENGTH_LONG).show();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
             }
         }
+    }
 
+
+    public boolean checkKey(byte[] keyin){
+        String validKey = "-----BEGIN RSA PRIVATE KEY-----";
+        String keyContent = new String(keyin);
+
+        return keyContent.split("\n")[0].equals(validKey);
     }
 
     public byte[] readBytes(InputStream inputStream) throws IOException {
