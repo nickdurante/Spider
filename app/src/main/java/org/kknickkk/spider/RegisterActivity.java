@@ -85,40 +85,56 @@ public class RegisterActivity extends AppCompatActivity {
         String port = ePort.getText().toString();
         Globals.currentPath = "/home/" + user;
 
+        if (!user.equals("") && !IP.equals("") && !port.equals("")) {
+            connectTask = new ConnectTask(RegisterActivity.this);
 
-        connectTask = new ConnectTask(RegisterActivity.this);
+            if (sID.isChecked()) {
+                //use private key
+                if (Globals.private_bytes != null) {
+                    connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()));
+                } else {
+                    Snackbar.make(view, "Check PEM key file", Snackbar.LENGTH_LONG).show();
 
-        if (sID.isChecked()) {
-            //use private key
-            connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()));
-        } else {
-            // use password
-            connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), ePassword.getText().toString());
-        }
+                }
+            } else {
+                String password = ePassword.getText().toString();
 
-        try {
-            session = connectTask.get();
-
-
-            if (session == null) {
-                Snackbar.make(view, "Could not connect", Snackbar.LENGTH_LONG).show();
+                if (!password.equals("")) {
+                    connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), password);
+                } else {
+                    Snackbar.make(view, "Please input a password", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
             }
 
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                session = connectTask.get();
+
+                if (session == null) {
+                    Snackbar.make(view, "Could not connect", Snackbar.LENGTH_LONG).show();
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            if (session != null) {
+                Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
+
+                Globals.session = session;
+                connectTask.cancel(true);
+                Log.d("REGISTER ACTIVITY", "launching Folder activity");
+                RegisterActivity.this.startActivity(FolderIntent);
+            }
+        } else {
+            Snackbar.make(view, "Check input fields", Snackbar.LENGTH_LONG).show();
+
         }
 
 
-        if (session != null) {
-            Intent FolderIntent = new Intent(RegisterActivity.this, FolderActivity.class);
-
-            Globals.session = session;
-            connectTask.cancel(true);
-            Log.d("REGISTER ACTIVITY", "launching Folder activity");
-            RegisterActivity.this.startActivity(FolderIntent);
-        }
     }
 
     @Override
@@ -170,9 +186,9 @@ public class RegisterActivity extends AppCompatActivity {
                 uri = resultData.getData();
                 try {
                     filecontent_bytes = readBytes(getContentResolver().openInputStream(uri));
-                    if(checkKey(filecontent_bytes)) {
+                    if (checkKey(filecontent_bytes)) {
                         Globals.private_bytes = filecontent_bytes;
-                    }else{
+                    } else {
                         Globals.private_bytes = null;
                         Toast.makeText(getApplicationContext(), "Selected is not in PEM format", Toast.LENGTH_LONG).show();
                     }
@@ -185,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public boolean checkKey(byte[] keyin){
+    public boolean checkKey(byte[] keyin) {
         String validKey = "-----BEGIN RSA PRIVATE KEY-----";
         String keyContent = new String(keyin);
 
