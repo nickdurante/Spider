@@ -1,6 +1,7 @@
-This application enables you to connect to your SFTP server using a password or a PEM private key.
-It is a simple file manager supporting:
+This application connects you to your SFTP server.
 
-*  File browsing
-*  File upload
-*  File download
+As login methods you can use a password or your PEM private key.
+At the moment only PEM keys are supported, so check to have it in the correct format.
+
+You can browse your files in the SFTP server and download them with a long press, or upload new ones using the '+' floating button.
+It also supports swipe down to refresh.
