@@ -3,6 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
@@ -59,11 +61,28 @@
         android:onClick="performFileSearchPrivate"
         android:text="Choose PEM private key..." />
 
+    <Switch
+        android:id="@+id/register_switch_pem_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password protected"
+        android:textAlignment="viewStart"
+        android:textSize="20sp" />
+
+
+    <EditText
+        android:id="@+id/register_pem_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="PEM password"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/register_button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:onClick="saveConnection"
         android:text="Connect" />
 

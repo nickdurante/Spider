@@ -31,8 +31,8 @@ import org.kknickkk.spider.Tasks.ConnectTask;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    Switch sID;
-    EditText ePassword;
+    Switch sID, PEM_password_switch;
+    EditText ePassword, PEM_password;
     Button privateKeyButton;
 
     @Override
@@ -43,6 +43,12 @@ public class RegisterActivity extends AppCompatActivity {
         ePassword = findViewById(R.id.register_password);
         privateKeyButton = findViewById(R.id.register_button_choose_file);
         privateKeyButton.setVisibility(View.INVISIBLE);
+
+        PEM_password_switch = findViewById(R.id.register_switch_pem_password);
+        PEM_password = findViewById(R.id.register_pem_password);
+        PEM_password_switch.setVisibility(View.INVISIBLE);
+        PEM_password.setVisibility(View.INVISIBLE);
+
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -56,9 +62,24 @@ public class RegisterActivity extends AppCompatActivity {
                 if (isChecked) {
                     ePassword.setVisibility(View.INVISIBLE);
                     privateKeyButton.setVisibility(View.VISIBLE);
+                    PEM_password_switch.setVisibility(View.VISIBLE);
                 } else {
                     ePassword.setVisibility(View.VISIBLE);
                     privateKeyButton.setVisibility(View.INVISIBLE);
+                    PEM_password_switch.setVisibility(View.INVISIBLE);
+                    PEM_password.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
+        PEM_password_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    PEM_password.setVisibility(View.VISIBLE);
+                } else {
+                    PEM_password.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -91,7 +112,14 @@ public class RegisterActivity extends AppCompatActivity {
             if (sID.isChecked()) {
                 //use private key
                 if (Globals.private_bytes != null) {
-                    connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()));
+
+                    if(PEM_password_switch.isChecked()){
+
+                        String PEM_pass = PEM_password.getText().toString();
+                        connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), String.valueOf(PEM_password_switch.isChecked()), "", PEM_pass);
+                    }else {
+                        connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), String.valueOf(PEM_password_switch.isChecked()), "", "");
+                    }
                 } else {
                     Snackbar.make(view, "Check PEM key file", Snackbar.LENGTH_LONG).show();
 
@@ -100,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = ePassword.getText().toString();
 
                 if (!password.equals("")) {
-                    connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), password);
+                    connectTask.execute(user, IP, port, String.valueOf(sID.isChecked()), String.valueOf(PEM_password_switch.isChecked()), password, "");
                 } else {
                     Snackbar.make(view, "Please input a password", Snackbar.LENGTH_LONG).show();
                     return;
@@ -186,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity {
                 uri = resultData.getData();
                 try {
                     filecontent_bytes = readBytes(getContentResolver().openInputStream(uri));
-                    if (checkKey(filecontent_bytes)) {
+                    if (checkKey(filecontent_bytes) || PEM_password_switch.isChecked()) {
                         Globals.private_bytes = filecontent_bytes;
                     } else {
                         Globals.private_bytes = null;

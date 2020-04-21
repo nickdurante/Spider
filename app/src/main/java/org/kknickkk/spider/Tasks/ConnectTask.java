@@ -40,18 +40,25 @@ public class ConnectTask extends AsyncTask<String, Integer, Session> {
         String user = params[0];
         String IP = params[1];
         int port = Integer.valueOf(params[2]);
-
         boolean usingKey = Boolean.valueOf(params[3]);
+        boolean usingPEMKey = Boolean.valueOf(params[4]);
+
         Log.e("CONNECT", "Boolean is: " + usingKey);
 
 
         try {
             if (!usingKey) {
                 session = jsch.getSession(user, IP, port);
-                session.setPassword(params[4]);
+                session.setPassword(params[5]);
 
             } else {
+                if (!usingPEMKey){
                 jsch.addIdentity("connection", Globals.private_bytes, null, null);
+                }else{
+                    String PEM_password = params[6];
+                    jsch.addIdentity("connection", Globals.private_bytes, null, PEM_password.getBytes());
+
+                }
                 session = jsch.getSession(user, IP, port);
                 session.setConfig("PreferredAuthentications", "publickey");
             }
