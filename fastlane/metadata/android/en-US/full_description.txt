@@ -2,6 +2,7 @@ This application connects you to your SFTP server.
 
 As login methods you can use a password or your PEM private key.
 At the moment only PEM keys are supported, so check to have it in the correct format.
+With release 0.2.2 also encrypted PEM keys are supported.
 
 You can browse your files in the SFTP server and download them with a long press, or upload new ones using the '+' floating button.
 It also supports swipe down to refresh.
